@@ -3,6 +3,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flask_blog import db
 from flask_blog.models import  BlogPost
 from flask_blog.blog_posts.forms import BlogPostForm
+from flask_blog.blog_posts.picture_handler import add_post_pic
+
 
 blog_posts = Blueprint('blog_posts', __name__)
 
@@ -12,14 +14,23 @@ blog_posts = Blueprint('blog_posts', __name__)
 def create():
     form = BlogPostForm()
     if form.validate_on_submit():
-        blog_post = BlogPost(title=form.title.data,
+        if form.picture.data:
+            title = form.title.data
+            pic = add_post_pic(form.picture.data, title)
+            # BlogPost.post_image = pic
+
+            blog_post = BlogPost(title=form.title.data,
                              text=form.text.data,
-                             user_id=current_user.id)
-        db.session.add(blog_post)
-        db.session.commit()
-        flash('Blog Post Created')
-        return redirect(url_for('core.index'))
-    return render_template('create_post.html', form=form)
+                             user_id=current_user.id,
+                             post_image=pic)
+            db.session.add(blog_post)
+            db.session.commit()
+            flash('Blog Post Created')
+            return redirect(url_for('core.index'))
+    post_image = url_for('static', filename='post_pics/' + str(form.picture.label))
+
+    return render_template('create_post.html', form=form, post_image=post_image)
+
 
 
 @blog_posts.route('/<int:blog_post_id>')

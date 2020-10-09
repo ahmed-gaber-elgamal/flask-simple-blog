@@ -3,11 +3,10 @@ from wtforms import StringField, SubmitField, BooleanField, DateTimeField, Radio
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
-from flask_blog.models import User
 
 
 class BlogPostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     text = TextAreaField('text', validators=[DataRequired()])
+    picture = FileField('Upload Post picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
