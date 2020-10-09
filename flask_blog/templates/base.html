@@ -26,21 +26,24 @@
   <li class="nav-link">
     <a  href="{{ url_for('core.info') }}">about</a>
   </li>
+  {% if current_user.is_authenticated %}
   <li class="nav-link">
-    <a class="nav-link" href="{{ url_for('core.info') }}">logout</a>
+    <a class="nav-link" href="{{ url_for('users.logout') }}">logout</a>
   </li>
   <li class="nav-link">
-    <a class="nav-link" href="{{ url_for('core.info') }}">Account</a>
+    <a class="nav-link" href="{{ url_for('users.account') }}">Account</a>
   </li>
   <li class="nav-link">
     <a class="nav-link" href="{{ url_for('core.info') }}">Create Post</a>
   </li>
+  {% else %}
   <li class="nav-link">
-    <a class="nav-link" href="{{ url_for('core.info') }}">login</a>
+    <a class="nav-link" href="{{ url_for('users.login') }}">login</a>
   </li>
   <li class="nav-link">
-    <a class="nav-link" href="{{ url_for('core.info') }}">register</a>
+    <a class="nav-link" href="{{ url_for('users.register') }}">register</a>
   </li>
+  {% endif %}
 </nav>
 
 {% block content %}
