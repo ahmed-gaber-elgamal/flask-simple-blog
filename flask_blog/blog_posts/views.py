@@ -75,8 +75,6 @@ def delete_post(blog_post_id):
     db.session.delete(blog_post)
     img = os.path.abspath(os.path.join('flask_blog/static/post_pics/', blog_post.post_image))
     os.remove(img)
-    # os.path.join(basedir, 'data.sqlite')
-
     db.session.commit()
     flash('Blog Post Deleted')
     return redirect(url_for('core.index'))
